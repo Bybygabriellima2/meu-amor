@@ -1,0 +1,1640 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meu Amor Por Você</title>
+    <style>
+        :root {
+            --primary: #ff6b00;
+            --secondary: #000000;
+            --white: #ffffff;
+            --overlay: rgba(0, 0, 0, 0.8);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+
+        .login-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.95);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 9999;
+    }
+
+    .login-container {
+        background-color: #0a0a0a;
+        border: 2px solid var(--primary);
+        border-radius: 10px;
+        padding: 2rem;
+        width: 90%;
+        max-width: 400px;
+        animation: fadeInScale 0.5s ease-out;
+    }
+
+    @keyframes fadeInScale {
+        from {
+            opacity: 0;
+            transform: scale(0.9);
+        }
+        to {
+            opacity: 1;
+            transform: scale(1);
+        }
+    }
+
+    .login-container h2 {
+        color: var(--primary);
+        text-align: center;
+        margin-bottom: 1.5rem;
+    }
+
+    .login-form {
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+    }
+
+    .input-group {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .input-group label {
+        color: var(--white);
+        font-size: 0.9rem;
+    }
+
+    .input-group input {
+        padding: 0.75rem;
+        border: 1px solid var(--primary);
+        border-radius: 5px;
+        background-color: rgba(0, 0, 0, 0.7);
+        color: var(--white);
+        transition: all 0.3s ease;
+    }
+
+    .input-group input:focus {
+        outline: none;
+        border-color: var(--primary);
+        box-shadow: 0 0 10px rgba(255, 107, 0, 0.3);
+    }
+
+    .login-form button {
+        padding: 0.75rem;
+        background-color: var(--primary);
+        color: var(--white);
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: all 0.3s;
+        font-weight: bold;
+    }
+
+    .login-form button:hover {
+        background-color: #ff8533;
+        transform: translateY(-2px);
+    }
+
+    .login-error {
+        color: #ff3333;
+        text-align: center;
+        min-height: 20px;
+    }
+
+        .menu-toggle {
+    display: none;
+    flex-direction: column;
+    gap: 6px;
+    cursor: pointer;
+    padding: 10px;
+    z-index: 1002;
+}
+
+.menu-toggle span {
+    display: block;
+    width: 25px;
+    height: 3px;
+    background-color: var(--primary);
+    transition: all 0.3s ease;
+}
+
+@media (max-width: 768px) {
+    .menu-toggle {
+        display: flex;
+    }
+
+    .nav {
+        padding: 0.5rem 1rem;
+        justify-content: flex-end;
+    }
+
+    .nav-links {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100vh;
+        background-color: rgba(0, 0, 0, 0.95);
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 2rem;
+        transform: translateY(-100%);
+        transition: transform 0.3s ease-in-out;
+        z-index: 1001;
+    }
+
+    .nav-links.active {
+        transform: translateY(0);
+    }
+
+    .nav-links a {
+        font-size: 1.5rem;
+        opacity: 0;
+        transform: translateY(-20px);
+        transition: all 0.3s ease;
+    }
+
+    .nav-links.active a {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    /* Animação para cada link aparecer sequencialmente */
+    .nav-links.active a:nth-child(1) { transition-delay: 0.1s; }
+    .nav-links.active a:nth-child(2) { transition-delay: 0.2s; }
+    .nav-links.active a:nth-child(3) { transition-delay: 0.3s; }
+    .nav-links.active a:nth-child(4) { transition-delay: 0.4s; }
+    .nav-links.active a:nth-child(5) { transition-delay: 0.5s; }
+
+    /* Animação do botão hambúrguer */
+    .menu-toggle.active span:nth-child(1) {
+        transform: rotate(45deg) translate(8px, 6px);
+    }
+
+    .menu-toggle.active span:nth-child(2) {
+        opacity: 0;
+    }
+
+    .menu-toggle.active span:nth-child(3) {
+        transform: rotate(-45deg) translate(8px, -6px);
+    }
+
+        body {
+            background-color: var(--secondary);
+            color: var(--white);
+            overflow-x: hidden;
+        }
+
+        /* Efeito Paralaxe */
+        .parallax-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at center, #1a1a1a 0%, #000000 100%);
+            z-index: -1;
+        }
+
+        /* Estrelas flutuantes */
+        .stars {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .star {
+            position: absolute;
+            background-color: white;
+            border-radius: 50%;
+            animation: twinkle 1s infinite alternate;
+        }
+
+        @keyframes twinkle {
+            from { opacity: 0.2; }
+            to { opacity: 1; }
+        }
+
+        .nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            padding: 1rem;
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+
+        .nav.scrolled {
+            padding: 0.5rem;
+            background-color: rgba(0, 0, 0, 0.95);
+            box-shadow: 0 2px 10px rgba(255, 107, 0, 0.2);
+        }
+
+        .nav-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            color: var(--white);
+            text-decoration: none;
+            font-size: 1.1rem;
+            transition: all 0.3s;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary);
+            background-color: rgba(255, 107, 0, 0.1);
+        }
+
+        section {
+            min-height: 100vh;
+            padding: 6rem 2rem 2rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .hero {
+            background: linear-gradient(45deg, var(--secondary), #1a1a1a);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, transparent 20%, var(--secondary) 90%);
+            z-index: 1;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1.5rem;
+            color: var(--primary);
+            animation: fadeIn 2s ease-in;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        .hero p {
+            font-size: 1.5rem;
+            margin-bottom: 2rem;
+            animation: slideUp 2s ease-in;
+        }
+
+        /* Seção de Datas Especiais */
+        .special-dates {
+            background: linear-gradient(135deg, #1a1a1a, #000000);
+            padding: 4rem 2rem;
+        }
+
+        .dates-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .date-card {
+            background-color: var(--secondary);
+            padding: 2rem;
+            border-radius: 10px;
+            border: 2px solid var(--primary);
+            text-align: center;
+            transition: all 0.3s;
+        }
+
+        .date-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 5px 15px rgba(255, 107, 0, 0.3);
+        }
+
+        .date-card h3 {
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+
+        .countdown {
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--white);
+            margin-top: 1rem;
+        }
+
+        .memory-wall {
+            background-color: #0a0a0a;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            padding: 4rem 2rem;
+        }
+
+        .memory-card {
+            background-color: var(--secondary);
+            padding: 2rem;
+            border-radius: 10px;
+            border: 2px solid var(--primary);
+            transition: all 0.3s;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            transform-style: preserve-3d;
+            perspective: 1000px;
+        }
+
+        .memory-card:hover {
+            transform: translateY(-10px) rotateX(10deg) rotateY(10deg);
+            box-shadow: 0 5px 15px rgba(255, 107, 0, 0.3);
+        }
+
+        .memory-card h3 {
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+
+        .memory-card .content {
+            transition: all 0.3s ease;
+        }
+
+        .memory-card .hidden-content {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--overlay);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            opacity: 0;
+            transition: all 0.3s ease;
+            transform: scale(0.9);
+        }
+
+        .memory-card:hover .hidden-content {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        /* Sistema de Tags */
+        .memory-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        .tag {
+            background-color: var(--primary);
+            color: var(--white);
+            padding: 0.25rem 0.75rem;
+            border-radius: 15px;
+            font-size: 0.8rem;
+        }
+
+        /* Botão de Favoritar */
+        .favorite-btn {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: none;
+            border: none;
+            color: #ffd700;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .favorite-btn:hover {
+            transform: scale(1.2);
+        }
+
+        .love-counter {
+            text-align: center;
+            background: linear-gradient(135deg, var(--secondary), #1a1a1a);
+            position: relative;
+        }
+
+        .counter-container {
+            display: flex;
+            gap: 2rem;
+            margin-top: 2rem;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .counter-box {
+            background-color: var(--primary);
+            padding: 2rem;
+            border-radius: 10px;
+            min-width: 200px;
+            text-align: center;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .counter-box::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            transform: rotate(45deg);
+            transition: all 0.3s ease;
+        }
+
+        .counter-box:hover::before {
+            animation: shine 1.5s;
+        }
+
+        .counter-box h3 {
+            color: var(--secondary);
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+        }
+
+        .counter-box .number {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: var(--secondary);
+        }
+
+        /* Gráfico de Amor */
+        .love-graph {
+            width: 100%;
+            max-width: 800px;
+            height: 300px;
+            margin: 2rem auto;
+            background-color: var(--secondary);
+            border-radius: 10px;
+            padding: 1rem;
+            position: relative;
+        }
+
+        .graph-line {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, var(--primary) 0%, #ff1493 100%);
+            animation: growLine 2s ease-out forwards;
+        }
+
+        @keyframes growLine {
+            from { transform: scaleX(0); }
+            to { transform: scaleX(1); }
+        }
+
+        .love-notes {
+            background-color: #0a0a0a;
+        }
+
+        .note-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            max-width: 500px;
+            width: 100%;
+        }
+
+        .note-form input,
+        .note-form textarea {
+            padding: 1rem;
+            border: none;
+            border-radius: 5px;
+            background-color: var(--secondary);
+            color: var(--white);
+            border: 1px solid var(--primary);
+            transition: all 0.3s ease;
+        }
+
+        .note-form input:focus,
+        .note-form textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 10px rgba(255, 107, 0, 0.3);
+        }
+
+        .note-form button {
+            padding: 1rem 2rem;
+            background-color: var(--primary);
+            color: var(--white);
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .note-form button:hover {
+            background-color: #ff8533;
+            transform: translateY(-2px);
+        }
+
+        .notes-container {
+            margin-top: 2rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+            max-width: 1200px;
+            width: 100%;
+        }
+
+        .note {
+            background-color: var(--secondary);
+            padding: 1rem;
+            border-radius: 5px;
+            border: 1px solid var(--primary);
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .note:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(255, 107, 0, 0.2);
+        }
+
+        .floating-hearts {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1000;
+        }
+
+        /* Sistema de Humor Expandido */
+        .mood-panel {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: var(--secondary);
+            padding: 1rem;
+            border-radius: 10px;
+            z-index: 1000;
+            transition: all 0.3s ease;
+            display: none;
+        }
+
+        .mood-panel.active {
+            display: block;
+        }
+
+        .mood-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 0.5rem;
+        }
+
+        .mood-option {
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            padding: 0.5rem;
+            border-radius: 5px;
+        }
+
+        .mood-option:hover {
+            background-color: rgba(255, 107, 0, 0.2);
+            transform: scale(1.1);
+        }
+
+        .mood-indicator {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: var(--primary);
+            padding: 1rem;
+            border-radius: 50%;
+            cursor: pointer;
+            z-index: 1001;
+            transition: all 0.3s ease;
+        }
+
+        .mood-indicator:hover {
+            transform: scale(1.1);
+        }
+
+        .mood-history {
+            position: fixed;
+            bottom: 80px;
+            right: 20px;
+            background-color: var(--secondary);
+            padding: 1rem;
+            border-radius: 10px;
+            z-index: 999;
+            max-width: 200px;
+            display: none;
+        }
+
+        .mood-history.active {
+            display: block;
+        }
+
+        .mood-message {
+            position: fixed;
+            bottom: 100px;
+            right: 20px;
+            background-color: var(--primary);
+            color: var(--white);
+            padding: 1rem;
+            border-radius: 10px;
+            z-index: 1000;
+            max-width: 250px;
+            display: none;
+            animation: fadeIn 0.3s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        @keyframes shine {
+            0% { left: -50%; }100% { left: 150%; }
+        }
+
+        @keyframes float {
+            0% { 
+                transform: translateY(0vh) translateX(0) rotate(0deg); 
+                opacity: 1; 
+            }
+            100% { 
+                transform: translateY(-100vh) translateX(20px) rotate(360deg); 
+                opacity: 0; 
+            }
+        }
+
+        /* Animação em espiral para corações */
+        @keyframes spiral {
+            0% {
+                transform: translate(0, 0) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translate(calc(cos(360deg) * 100px), calc(sin(360deg) * 100px)) rotate(720deg);
+                opacity: 0;
+            }
+        }
+
+        /* Animação zigzag para corações */
+        @keyframes zigzag {
+            0% { transform: translateX(0) translateY(0); opacity: 1; }
+            25% { transform: translateX(50px) translateY(-25px); }
+            50% { transform: translateX(-50px) translateY(-50px); }
+            75% { transform: translateX(50px) translateY(-75px); }
+            100% { transform: translateX(0) translateY(-100px); opacity: 0; }
+        }
+
+        /* Responsividade */
+        @media (max-width: 768px) {
+            .nav-links {
+                flex-direction: column;
+                align-items: center;
+                gap: 0.5rem;
+            }
+
+            .nav-links a {
+                width: 100%;
+                text-align: center;
+            }
+
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .hero p {
+                font-size: 1.2rem;
+            }
+
+            .counter-container {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .counter-box {
+                width: 100%;
+                max-width: 300px;
+            }
+
+            .memory-card {
+                margin: 0 1rem;
+            }
+
+            .note-form {
+                margin: 0 1rem;
+            }
+
+            .dates-container {
+                grid-template-columns: 1fr;
+            }
+
+            .mood-panel {
+                width: 90%;
+                right: 5%;
+                bottom: 80px;
+            }
+
+            .mood-history {
+                width: 90%;
+                right: 5%;
+            }
+
+            .mood-message {
+                width: 90%;
+                right: 5%;
+            }
+        }
+
+        @media (max-width: 480px) {
+            section {
+                padding: 4rem 1rem 1rem;
+            }
+
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .counter-box {
+                padding: 1.5rem;
+            }
+
+            .note-form input,
+            .note-form textarea {
+                font-size: 0.9rem;
+            }
+
+            .memory-card {
+                transform: none !important;
+            }
+
+            .date-card {
+                padding: 1rem;
+            }
+
+            .countdown {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="login-overlay" class="login-overlay">
+        <div class="login-container">
+            <h2>Bem-vindo ao Nosso Mural de Amor</h2>
+            <form id="login-form" class="login-form">
+                <div class="input-group">
+                    <label for="username">Usuário</label>
+                    <input type="text" id="username" placeholder="Digite seu usuário" required>
+                </div>
+                <div class="input-group">
+                    <label for="password">Senha</label>
+                    <input type="password" id="password" placeholder="Digite sua senha" required>
+                </div>
+                <button type="submit">Entrar</button>
+                <p id="login-error" class="login-error"></p>
+            </form>
+        </div>
+    </div>
+
+    <div class="parallax-bg"></div>
+    <div class="stars"></div>
+
+    <nav class="nav">
+        <div class="menu-toggle">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+        <div class="nav-links">
+            <a href="#hero">Início</a>
+            <a href="#dates">Datas Especiais</a>
+            <a href="#memories">Memórias</a>
+            <a href="#counter">Nosso Amor</a>
+            <a href="#notes">Recados</a>
+        </div>
+    </nav>
+
+    <div class="floating-hearts"></div>
+
+    <section id="hero" class="hero">
+        <div class="hero-content">
+            <h1>Meu Amor Por Você é Infinito</h1>
+            <p>Cada dia ao seu lado é uma nova razão para sorrir</p>
+            <div id="heart-button" style="cursor: pointer; font-size: 3rem;">❤️</div>
+        </div>
+    </section>
+
+    <section id="dates" class="special-dates">
+        <h2>Datas Especiais</h2>
+        <div class="dates-container">
+            <div class="date-card">
+                <h3>Meu Aniversário</h3>
+                <p>29 de Julho, 2025</p>
+                <div class="countdown" data-date="2025-07-29"></div>
+            </div>
+            <div class="date-card">
+                <h3>Aniversário Dela</h3>
+                <p>21 de Julho, 2025</p>
+                <div class="countdown" data-date="2025-07-21"></div>
+            </div>
+            <div class="date-card">
+                <h3>Nosso Casamento</h3>
+                <p>03 de Setembro, 2025</p>
+                <div class="countdown" data-date="2025-09-03"></div>
+            </div>
+            <div class="date-card">
+                <h3>Natal</h3>
+                <p>25 de Dezembro, 2025</p>
+                <div class="countdown" data-date="2025-12-25"></div>
+            </div>
+            <div class="date-card">
+                <h3>Ano Novo</h3>
+                <p>31 de Dezembro, 2025</p>
+                <div class="countdown" data-date="2025-12-31"></div>
+            </div>
+        </div>
+    </section>
+
+    <section id="memories" class="memory-wall">
+    <div class="memory-card" data-tags="encontro,início">
+        <button class="favorite-btn">⭐</button>
+        <div class="content">
+            <h3>Nosso Primeiro Encontro</h3>
+            <p>Aquele momento mágico quando nossos olhares se cruzaram pela primeira vez...</p>
+            <div class="memory-tags">
+                <span class="tag">Encontro</span>
+                <span class="tag">Início</span>
+            </div>
+        </div>
+        <div class="hidden-content">
+            <p>Jamais esquecerei o nervosismo e a alegria daquele primeiro encontro. Seu sorriso iluminou todo o ambiente e meu coração soube instantaneamente que você era especial.</p>
+        </div>
+    </div>
+    
+    <div class="memory-card" data-tags="viagem,aventura">
+        <button class="favorite-btn">⭐</button>
+        <div class="content">
+            <h3>Primeira Viagem Juntos</h3>
+            <p>A aventura de explorar um novo destino de mãos dadas...</p>
+            <div class="memory-tags">
+                <span class="tag">Viagem</span>
+                <span class="tag">Aventura</span>
+            </div>
+        </div>
+        <div class="hidden-content">
+            <p>A estrada parecia mais bonita ao seu lado. Entre risadas e novas descobertas, soube que queria viajar o mundo com você.</p>
+        </div>
+    </div>
+    
+    <div class="memory-card" data-tags="surpresa,amor">
+        <button class="favorite-btn">⭐</button>
+        <div class="content">
+            <h3>O Primeiro Presente Surpresa</h3>
+            <p>Quando percebi que pequenos gestos fazem toda a diferença...</p>
+            <div class="memory-tags">
+                <span class="tag">Surpresa</span>
+                <span class="tag">Amor</span>
+            </div>
+        </div>
+        <div class="hidden-content">
+            <p>Seu olhar de felicidade ao abrir o presente foi minha maior recompensa. Cada detalhe foi pensado com carinho para você.</p>
+        </div>
+    </div>
+    
+    <div class="memory-card" data-tags="aniversário,felicidade">
+        <button class="favorite-btn">⭐</button>
+        <div class="content">
+            <h3>Nosso Primeiro Aniversário</h3>
+            <p>Um ano de momentos inesquecíveis e um amor que só cresceu...</p>
+            <div class="memory-tags">
+                <span class="tag">Aniversário</span>
+                <span class="tag">Felicidade</span>
+            </div>
+        </div>
+        <div class="hidden-content">
+            <p>Comemoramos com alegria cada memória que construímos juntos. O futuro ao seu lado me enche de esperança.</p>
+        </div>
+    </div>
+    
+    <div class="memory-card" data-tags="risadas,diversão">
+        <button class="favorite-btn">⭐</button>
+        <div class="content">
+            <h3>Aquela Noite de Risadas</h3>
+            <p>Quando rimos tanto que chegamos a chorar...</p>
+            <div class="memory-tags">
+                <span class="tag">Risadas</span>
+                <span class="tag">Diversão</span>
+            </div>
+        </div>
+        <div class="hidden-content">
+            <p>Foram horas de piadas e momentos espontâneos. Seu riso é minha melodia favorita.</p>
+        </div>
+    </div>
+    
+    <div class="memory-card" data-tags="natal,emoção">
+        <button class="favorite-btn">⭐</button>
+        <div class="content">
+            <h3>Nosso Primeiro Natal</h3>
+            <p>A magia das luzes refletindo o brilho do nosso amor...</p>
+            <div class="memory-tags">
+                <span class="tag">Natal</span>
+                <span class="tag">Emoção</span>
+            </div>
+        </div>
+        <div class="hidden-content">
+            <p>A ceia, os presentes e os abraços apertados. Foi um Natal inesquecível ao seu lado.</p>
+        </div>
+    </div>
+    
+    <div class="memory-card" data-tags="comida,especial">
+        <button class="favorite-btn">⭐</button>
+        <div class="content">
+            <h3>Nosso Jantar Especial</h3>
+            <p>Quando cozinhamos juntos e criamos uma memória deliciosa...</p>
+            <div class="memory-tags">
+                <span class="tag">Comida</span>
+                <span class="tag">Especial</span>
+            </div>
+        </div>
+        <div class="hidden-content">
+            <p>A bagunça na cozinha, os sabores inesquecíveis e o amor em cada detalhe fizeram deste dia um dos mais especiais.</p>
+        </div>
+    </div>
+    
+    <div class="memory-card" data-tags="filme,noite aconchegante">
+        <button class="favorite-btn">⭐</button>
+        <div class="content">
+            <h3>Maratona de Filmes</h3>
+            <p>Uma noite inteira assistindo nossos filmes favoritos...</p>
+            <div class="memory-tags">
+                <span class="tag">Filme</span>
+                <span class="tag">Noite Aconchegante</span>
+            </div>
+        </div>
+        <div class="hidden-content">
+            <p>Abraçados no sofá, entre risadas e emoção, vivemos momentos simples e inesquecíveis.</p>
+        </div>
+    </div>
+</section>
+
+
+    <section id="counter" class="love-counter">
+        <h2>Nosso Amor em Números</h2>
+        <div class="counter-container">
+            <div class="counter-box">
+                <h3>Dias Juntos</h3>
+                <div class="number" id="days-counter">0</div>
+            </div>
+            <div class="counter-box">
+                <h3>Sorrisos Compartilhados</h3>
+                <div class="number" id="smiles-counter">0</div>
+            </div>
+            <div class="counter-box">
+                <h3>Momentos Especiais</h3>
+                <div class="number" id="moments-counter">0</div>
+            </div>
+        </div>
+        <div class="love-graph">
+            <div class="graph-line"></div>
+        </div>
+    </section>
+
+    <section id="notes" class="love-notes">
+        <h2>Mural de Amor</h2>
+        <form class="note-form" id="note-form">
+            <input type="text" placeholder="Título" required>
+            <textarea placeholder="Escreva uma mensagem de amor..." required></textarea>
+            <button type="submit">Enviar com Amor ❤️</button>
+        </form>
+        <div class="notes-container" id="notes-container"></div>
+    </section>
+
+    <div class="mood-indicator" id="mood-button" title="Clique para mudar seu humor">😊</div>
+    <div class="mood-panel" id="mood-panel">
+        <div class="mood-grid">
+            <!-- Emojis expandidos -->
+            <div class="mood-option">😊</div>
+            <div class="mood-option">🥰</div>
+            <div class="mood-option">😍</div>
+            <div class="mood-option">💑</div>
+            <div class="mood-option">💏</div>
+            <div class="mood-option">💖</div>
+            <div class="mood-option">🤗</div>
+            <div class="mood-option">😘</div>
+            <div class="mood-option">🥺</div>
+            <div class="mood-option">😌</div>
+            <div class="mood-option">🦋</div>
+            <div class="mood-option">✨</div>
+        </div>
+    </div>
+    <div class="mood-history" id="mood-history">
+        <h4>Histórico de Humor</h4>
+        <div id="mood-history-list"></div>
+    </div>
+    <div class="mood-message" id="mood-message"></div>
+
+    <script>
+
+        document.addEventListener('DOMContentLoaded', () => {
+    // Verificar se o usuário já está logado
+        const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+        const loginOverlay = document.getElementById('login-overlay');
+        
+        if (!isLoggedIn) {
+            loginOverlay.style.display = 'flex';
+        } else {
+            loginOverlay.style.display = 'none';
+            loadSavedData();
+        }
+
+        // Handler para o formulário de login
+        const loginForm = document.getElementById('login-form');
+        loginForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const loginError = document.getElementById('login-error');
+            
+            // Verificar credenciais
+            if (username === 'amor' && password === 'parasempre') {
+                localStorage.setItem('isLoggedIn', 'true');
+                loginOverlay.style.display = 'none';
+                loadSavedData();
+            } else {
+                loginError.textContent = 'Usuário ou senha incorretos. Tente novamente.';
+                // Efeito de shake no formulário
+                loginForm.classList.add('shake');
+                setTimeout(() => {
+                    loginForm.classList.remove('shake');
+                }, 500);
+            }
+        });
+
+        // Adicionar função para salvar notas no localStorage
+        const noteForm = document.getElementById('note-form');
+        noteForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            const title = noteForm.querySelector('input').value;
+            const content = noteForm.querySelector('textarea').value;
+            
+            addNote(title, content);
+            saveNotes();
+            
+            // Limpar o formulário
+            noteForm.reset();
+        });
+
+        // Função para favoritar memórias
+        document.querySelectorAll('.favorite-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const card = btn.closest('.memory-card');
+                const isFavorited = btn.textContent === '⭐';
+                btn.textContent = isFavorited ? '☆' : '⭐';
+                
+                if (isFavorited) {
+                    card.style.border = '2px solid var(--primary)';
+                } else {
+                    card.style.border = '2px solid gold';
+                }
+                
+                saveFavorites();
+            });
+        });
+
+        // Carrega o humor salvo
+        loadSavedMood();
+    });
+
+    // Função para adicionar nota
+    function addNote(title, content) {
+        const notesContainer = document.getElementById('notes-container');
+        const noteElement = document.createElement('div');
+        noteElement.className = 'note';
+        noteElement.innerHTML = `
+            <h3>${title}</h3>
+            <p>${content}</p>
+            <div class="note-footer">
+                <small>${new Date().toLocaleString()}</small>
+                <button class="delete-note">🗑️</button>
+            </div>
+        `;
+        
+        // Adicionar evento de exclusão
+        const deleteBtn = noteElement.querySelector('.delete-note');
+        deleteBtn.addEventListener('click', () => {
+            noteElement.remove();
+            saveNotes();
+        });
+        
+        notesContainer.appendChild(noteElement);
+    }
+
+    // Função para salvar notas no localStorage
+    function saveNotes() {
+        const notes = [];
+        document.querySelectorAll('.note').forEach(note => {
+            notes.push({
+                title: note.querySelector('h3').textContent,
+                content: note.querySelector('p').textContent,
+                date: note.querySelector('small').textContent
+            });
+        });
+        
+        localStorage.setItem('loveNotes', JSON.stringify(notes));
+    }
+
+    // Função para salvar favoritos
+    function saveFavorites() {
+        const favorites = [];
+        document.querySelectorAll('.memory-card').forEach(card => {
+            const btn = card.querySelector('.favorite-btn');
+            if (btn.textContent === '⭐') {
+                favorites.push(card.querySelector('h3').textContent);
+            }
+        });
+        
+        localStorage.setItem('loveFavorites', JSON.stringify(favorites));
+    }
+
+    // Função para salvar o humor atual
+    function saveMood(mood) {
+        localStorage.setItem('currentMood', mood);
+        localStorage.setItem('moodHistory', JSON.stringify(moodHistoryArray));
+    }
+
+    // Carrega os dados salvos
+    function loadSavedData() {
+        // Carregar notas
+        const savedNotes = JSON.parse(localStorage.getItem('loveNotes') || '[]');
+        const notesContainer = document.getElementById('notes-container');
+        notesContainer.innerHTML = '';
+        
+        savedNotes.forEach(note => {
+            const noteElement = document.createElement('div');
+            noteElement.className = 'note';
+            noteElement.innerHTML = `
+                <h3>${note.title}</h3>
+                <p>${note.content}</p>
+                <div class="note-footer">
+                    <small>${note.date}</small>
+                    <button class="delete-note">🗑️</button>
+                </div>
+            `;
+            
+            // Adicionar evento de exclusão
+            const deleteBtn = noteElement.querySelector('.delete-note');
+            deleteBtn.addEventListener('click', () => {
+                noteElement.remove();
+                saveNotes();
+            });
+            
+            notesContainer.appendChild(noteElement);
+        });
+        
+        // Carregar favoritos
+        const savedFavorites = JSON.parse(localStorage.getItem('loveFavorites') || '[]');
+        document.querySelectorAll('.memory-card').forEach(card => {
+            const title = card.querySelector('h3').textContent;
+            const btn = card.querySelector('.favorite-btn');
+            
+            if (savedFavorites.includes(title)) {
+                btn.textContent = '⭐';
+                card.style.border = '2px solid gold';
+            } else {
+                btn.textContent = '☆';
+                card.style.border = '2px solid var(--primary)';
+            }
+        });
+        
+        // Carregar humor
+        loadSavedMood();
+    }
+
+    // Carregar humor salvo
+    function loadSavedMood() {
+        const savedMood = localStorage.getItem('currentMood');
+        const savedMoodHistory = JSON.parse(localStorage.getItem('moodHistory') || '[]');
+        
+        if (savedMood) {
+            moodButton.textContent = savedMood;
+            updateSiteColors(savedMood);
+        }
+        
+        if (savedMoodHistory.length > 0) {
+            moodHistoryArray = savedMoodHistory;
+            updateMoodHistory();
+        }
+    }
+
+    // Modificação para o sistema de humor
+    const moodOptions = document.querySelectorAll('.mood-option');
+    moodOptions.forEach(option => {
+        option.addEventListener('click', () => {
+            const mood = option.textContent;
+            moodButton.textContent = mood;
+            
+            // Adicionar ao histórico
+            const now = new Date();
+            moodHistoryArray.unshift({
+                mood,
+                time: now.toLocaleTimeString()
+            });
+            
+            // Manter apenas os últimos 5 humores
+            moodHistoryArray = moodHistoryArray.slice(0, 5);
+            
+            // Atualizar histórico visual
+            updateMoodHistory();
+            
+            // Mostrar mensagem
+            showMoodMessage(mood);
+            
+            // Atualizar cores do site baseado no humor
+            updateSiteColors(mood);
+            
+            // Salvar humor no localStorage
+            saveMood(mood);
+            
+            moodPanel.classList.remove('active');
+        });
+    });
+
+    // Efeito de shake para o formulário de login
+    
+        // Criação de estrelas
+        function createStars() {
+            const starsContainer = document.querySelector('.stars');
+            for (let i = 0; i < 100; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                star.style.left = `${Math.random() * 100}%`;
+                star.style.top = `${Math.random() * 100}%`;
+                star.style.width = star.style.height = `${Math.random() * 3}px`;
+                star.style.animationDelay = `${Math.random() * 2}s`;
+                starsContainer.appendChild(star);
+            }
+        }
+        createStars();
+
+
+        document.addEventListener('DOMContentLoaded', () => {
+    const menuToggle = document.querySelector('.menu-toggle');
+    const navLinks = document.querySelector('.nav-links');
+    const links = document.querySelectorAll('.nav-links a');
+
+    menuToggle.addEventListener('click', () => {
+        menuToggle.classList.toggle('active');
+        navLinks.classList.toggle('active');
+    });
+
+    // Fechar menu ao clicar em um link
+    links.forEach(link => {
+        link.addEventListener('click', () => {
+            menuToggle.classList.remove('active');
+            navLinks.classList.remove('active');
+        });
+    });
+
+    // Fechar menu ao clicar fora
+    document.addEventListener('click', (e) => {
+        if (!navLinks.contains(e.target) && !menuToggle.contains(e.target)) {
+            menuToggle.classList.remove('active');
+            navLinks.classList.remove('active');
+        }
+    });
+});
+
+        // Contador regressivo para datas especiais
+        function updateCountdowns() {
+            document.querySelectorAll('.countdown').forEach(countdown => {
+                const targetDate = new Date(countdown.dataset.date);
+                const now = new Date();
+                const diff = targetDate - now;
+                
+                const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+                countdown.textContent = `${days} dias`;
+            });
+        }
+        
+        setInterval(updateCountdowns, 1000);
+        updateCountdowns();
+
+        // Sistema de corações flutuantes melhorado
+        function createHeart() {
+            const heart = document.createElement('div');
+            const heartStyles = ['❤️', '💖', '💗', '💓', '💝', '💘'];
+            const animations = ['float', 'spiral', 'zigzag'];
+            
+            heart.innerHTML = heartStyles[Math.floor(Math.random() * heartStyles.length)];
+            heart.style.position = 'fixed';
+            heart.style.left = Math.random() * 100 + 'vw';
+            heart.style.top = '100vh';
+            heart.style.fontSize = (Math.random() * 20 + 10) + 'px';
+            heart.style.animation = `${animations[Math.floor(Math.random() * animations.length)]} ${Math.random() * 3 + 2}s linear`;
+            heart.style.opacity = '0.7';
+            heart.style.transform = `rotate(${Math.random() * 360}deg)`;
+            heart.style.cursor = 'grab';
+            
+            // Tornar corações arrastáveis
+            heart.addEventListener('mousedown', startDragging);
+            heart.addEventListener('touchstart', startDragging);
+            
+            document.querySelector('.floating-hearts').appendChild(heart);
+            
+            setTimeout(() => {
+                heart.remove();
+            }, 5000);
+        }
+
+        // Funcionalidade de arrastar corações
+        function startDragging(e) {
+            const heart = e.target;
+            heart.style.animation = 'none';
+            heart.style.cursor = 'grabbing';
+            
+            const moveHandler = (e) => {
+                const x = e.type === 'mousemove' ? e.clientX : e.touches[0].clientX;
+                const y = e.type === 'mousemove' ? e.clientY : e.touches[0].clientY;
+                heart.style.left = x + 'px';
+                heart.style.top = y + 'px';
+            };
+            
+            const stopDragging = () => {
+                document.removeEventListener('mousemove', moveHandler);
+                document.removeEventListener('touchmove', moveHandler);
+                heart.style.cursor = 'grab';
+            };
+            
+            document.addEventListener('mousemove', moveHandler);
+            document.addEventListener('touchmove', moveHandler);
+            document.addEventListener('mouseup', stopDragging, { once: true });
+            document.addEventListener('touchend', stopDragging, { once: true });
+        }
+
+        // Sistema de humor expandido
+        const moodButton = document.getElementById('mood-button');
+        const moodPanel = document.getElementById('mood-panel');
+        const moodHistory = document.getElementById('mood-history');
+        const moodMessage = document.getElementById('mood-message');
+        let moodHistoryArray = [];
+
+        const moodMessages = {
+            '😊': 'Que bom te ver feliz! Seu sorriso ilumina meu dia!',
+            '🥰': 'Amor transbordando! Continue assim!',
+            '😍': 'Seus olhos brilham de uma forma especial hoje!',
+            '💑': 'Juntos somos mais fortes!',
+            '💏': 'Um beijo cheio de amor para você!',
+            '💖': 'Seu coração está transbordando amor!',
+            '🤗': 'Um abraço apertado cheio de carinho!',
+            '😘': 'Beijinhos doces para você!',
+            '🥺': 'Awn, que fofura!',
+            '😌': 'Paz e serenidade no coração!',
+            '🦋': 'Livre e leve como uma borboleta!',
+            '✨': 'Brilhando mais que as estrelas!'
+        };
+
+        moodButton.addEventListener('click', () => {
+            moodPanel.classList.toggle('active');
+            moodHistory.classList.toggle('active');
+        });
+
+        document.querySelectorAll('.mood-option').forEach(option => {
+            option.addEventListener('click', () => {
+                const mood = option.textContent;
+                moodButton.textContent = mood;
+                
+                // Adicionar ao histórico
+                const now = new Date();
+                moodHistoryArray.unshift({
+                    mood,
+                    time: now.toLocaleTimeString()
+                });
+                
+                // Manter apenas os últimos 5 humores
+                moodHistoryArray = moodHistoryArray.slice(0, 5);
+                
+                // Atualizar histórico visual
+                updateMoodHistory();
+                
+                // Mostrar mensagem
+                showMoodMessage(mood);
+                
+                // Atualizar cores do site baseado no humor
+                updateSiteColors(mood);
+                
+                moodPanel.classList.remove('active');
+            });
+        });
+
+        function updateMoodHistory() {
+            const historyList = document.getElementById('mood-history-list');
+            historyList.innerHTML = moodHistoryArray
+                .map(item => `<div>${item.mood} - ${item.time}</div>`)
+                .join('');
+        }
+
+        function showMoodMessage(mood) {
+            const message = moodMessages[mood] || 'Seu amor me faz feliz!';
+            moodMessage.textContent = message;
+            moodMessage.style.display = 'block';
+            
+            setTimeout(() => {
+                moodMessage.style.display = 'none';
+            }, 3000);
+        }
+
+        function updateSiteColors(mood) {
+            const root = document.documentElement;
+            // Cores diferentes baseadas no humor
+            const colorSchemes = {
+                '😊': '#ff6b00',
+                '🥰': '#ff4d8c',
+                '😍': '#ff1a75',
+                '💑': '#ff3366',
+                '💏': '#ff0066',
+                '💖': '#ff99cc',
+                '🤗': '#ff8533',
+                '😘': '#ff6699',
+                '🥺': '#ffb366',
+                '😌': '#ff944d',
+                '🦋': '#4d94ff',
+                '✨': '#ffcc00'
+            };
+            
+            root.style.setProperty('--primary', colorSchemes[mood] || '#ff6b00');
+        }
+
+        // Sistema de favoritos para memórias
+        document.querySelectorAll('.favorite-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const isFavorited = btn.textContent === '⭐';
+                btn.textContent = isFavorited ? '☆' : '⭐';
+                
+                const card = btn.closest('.memory-card');
+                if (isFavorited) {
+                    card.style.border = '2px solid var(--primary)';
+                } else {
+                    card.style.border = '2px solid gold';
+                }
+            });
+        });
+
+        // Sistema de tags para memórias
+        const tags = new Set();
+        document.querySelectorAll('.memory-card').forEach(card => {
+            const cardTags = card.dataset.tags.split(',');
+            cardTags.forEach(tag => tags.add(tag));
+        });
+
+        // Filtrar memórias por tag
+        function filterMemories(tag) {
+            document.querySelectorAll('.memory-card').forEach(card => {
+                const cardTags = card.dataset.tags.split(',');
+                if (tag === 'all' || cardTags.includes(tag)) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+
+        // Animações dos contadores
+        function animateValue(element, start, end, duration) {
+            let startTimestamp = null;
+            const step = (timestamp) => {
+                if (!startTimestamp) startTimestamp = timestamp;
+                const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+                const currentValue = Math.floor(progress * (end - start) + start);
+                element.textContent = currentValue.toLocaleString();
+                if (progress < 1) {
+                    window.requestAnimationFrame(step);
+                }
+            };
+            window.requestAnimationFrame(step);
+        }
+
+        // Gráfico de amor
+        function initLoveGraph() {
+            const graph = document.querySelector('.love-graph');
+            const points = [];
+            const totalPoints = 10;
+            
+            for (let i = 0; i < totalPoints; i++) {
+                const value = Math.random() * 20 + 80; // Valores entre 80 e 100
+                points.push(value);
+            }
+            
+            // Criar pontos no gráfico
+            points.forEach((value, index) => {
+                const point = document.createElement('div');
+                point.className = 'graph-point';
+                point.style.left = `${(index / (totalPoints - 1)) * 100}%`;
+                point.style.bottom = `${value}%`;
+                graph.appendChild(point);
+            });
+        }
+
+        // Inicialização
+        document.addEventListener('DOMContentLoaded', () => {
+            // Iniciar contadores
+            const startDate = new Date('2024-01-10');
+            const today = new Date();
+            const diffDays = Math.ceil((today - startDate) / (1000 * 60 * 60 * 24));
+            
+            animateValue(document.getElementById('days-counter'), 0, diffDays, 2000);
+            animateValue(document.getElementById('smiles-counter'), 0, diffDays * 5, 2000);
+            animateValue(document.getElementById('moments-counter'), 0, diffDays * 3, 2000);
+            
+            // Iniciar gráfico
+            initLoveGraph();
+            
+            // Criar corações iniciais
+            setInterval(createHeart, 2000);
+            
+            // Atualizar contagens regressivas
+            updateCountdowns();
+        });
+
+        // Parallax effect
+        window.addEventListener('scroll', () => {
+            const scrolled = window.pageYOffset;
+            document.querySelector('.parallax-bg').style.transform = 
+                `translateY(${scrolled * 0.5}px)`;
+        });
+
+        // Navbar scroll effect
+        window.addEventListener('scroll', () => {
+            const nav = document.querySelector('.nav');
+            if (window.scrollY > 50) {
+                nav.classList.add('scrolled');
+            } else {
+                nav.classList.remove('scrolled');
+            }
+        });
+
+        // Smooth scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                const headerOffset = 60;
+                const elementPosition = target.offsetTop;
+                const offsetPosition = elementPosition - headerOffset;
+
+                window.scrollTo({
+                    top: offsetPosition,
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
+</body>
+</html>
